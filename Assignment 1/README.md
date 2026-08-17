@@ -2,7 +2,7 @@ To run the following python project you must run the following commands inside t
 
 python -m venv support_api/.venv
 
-support_api\.venv\Scripts\Activate.ps1
+support_api\\.venv\Scripts\Activate.ps1
 
 pip install -e .
 
