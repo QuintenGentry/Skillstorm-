@@ -1,0 +1,28 @@
+[project]
+name= "media-api"
+version = "0.1.0"
+description = "RESRT API for Social Media Post Compliance Screener"
+requires-python = ">=3.11"
+dependencies = [
+    "flask>=3.0",
+    "pydantic>=2.7",
+    "sqlalchemy>=2.0",
+    "flask-sqlalchemy>=3.1",
+    "flask-migrate>=4.0",
+    "psycopg[binary]>=3.1",
+    "python-dotenv>=1.0",
+    "boto3>=1.34",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23"
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["ticket_api*"]

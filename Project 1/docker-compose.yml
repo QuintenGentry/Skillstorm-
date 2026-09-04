@@ -1,0 +1,44 @@
+services:
+  # Setting up database.
+  db:
+    image: postgres:18
+    environment:
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: project_1
+
+    # Allows datastore elsewhere. 
+    volumes:
+      - db-data:/var/lib/postgresql
+
+    # Database uses port 5433, postgress is listening to 5432
+    ports:
+      - "5433:5432"
+
+    # check if databse is running. 
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # Setting up flask. 
+  api:
+    build: .
+    environment:
+      # Allow communication with database.
+      DATABASE_URL: postgresql+psycopg://postgres:root@db:5432/project_1
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_REGION: ${AWS_REGION}
+      MEDIA_AI_BUCKET_NAME: ${MEDIA_AI_BUCKET_NAME}
+    ports:
+      - "5000:5000"
+    
+    # Require healthcheck to run database. 
+    depends_on:
+      db:
+        condition: service_healthy
+
+# Already defined volumes earlier.
+volumes:
+  db-data:
